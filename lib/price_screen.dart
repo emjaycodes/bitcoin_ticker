@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'coin_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io' show Platform;
+import 'package:http/http.dart';
 
 class PriceScreen extends StatefulWidget {
   const PriceScreen({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class PriceScreen extends StatefulWidget {
 class _PriceScreenState extends State<PriceScreen> {
   String? selectedCurrency = 'USD';
 
-  DropdownButton<String> andriodDropdown(){
+  DropdownButton<String> androidDropdown(){
     
     List<DropdownMenuItem<String>> dropdownItems = [];
 
@@ -38,7 +39,7 @@ class _PriceScreenState extends State<PriceScreen> {
             }
             );
 
-  }
+  } // this is a function that creates a list for currencies for android
 
   CupertinoPicker iOSPicker(){
     List<DropdownMenuItem<String>> pickerItems = [];
@@ -58,17 +59,17 @@ class _PriceScreenState extends State<PriceScreen> {
               },
                children: pickerItems,
             );
-  }
+  } //this is a function that creates a list for currencies for android
 
 
-  Widget? getPicker(){
-    if (Platform.isIOS){
-      return iOSPicker();
-    }
-    else if (Platform.isAndroid){
-      return andriodDropdown();
-    }
-  }
+  // Widget? getPicker(){
+  //   if (Platform.isIOS){
+  //     return iOSPicker();
+  //   }
+  //   else if (Platform.isAndroid){
+  //     return andriodDropdown();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +108,7 @@ class _PriceScreenState extends State<PriceScreen> {
             alignment: Alignment.center,
             padding: const EdgeInsets.only(bottom: 30.0),
             color: Colors.lightBlue,
-            child: getPicker(),
+            child: Platform.isIOS ? iOSPicker() : androidDropdown(), // tenary operation that checks if the device is an iphone or an android device
           ),
         ],
       ),
