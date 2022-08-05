@@ -12,9 +12,8 @@ class PriceScreen extends StatefulWidget {
 class _PriceScreenState extends State<PriceScreen> {
   String? selectedCurrency = 'USD';
 
-  void getDropdownButton(){
-
-     DropdownButton<String>(
+  DropdownButton<String> getDropdownButton(){
+    return DropdownButton<String>(
               value: selectedCurrency,
               items: getDropdownItems(),
                onChanged: (value){
