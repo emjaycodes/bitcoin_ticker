@@ -14,6 +14,15 @@ class _PriceScreenState extends State<PriceScreen> {
 
   void getDropdownButton(){
 
+     DropdownButton<String>(
+              value: selectedCurrency,
+              items: getDropdownItems(),
+               onChanged: (value){
+              setState(() {
+                selectedCurrency = value;
+              });
+            }
+            );
 
   }
 
