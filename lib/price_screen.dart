@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'coin_data.dart';
 import 'package:flutter/cupertino.dart';
+import 'dart:io' show Platform;
 
 class PriceScreen extends StatefulWidget {
   const PriceScreen({Key? key}) : super(key: key);
@@ -12,21 +13,9 @@ class PriceScreen extends StatefulWidget {
 class _PriceScreenState extends State<PriceScreen> {
   String? selectedCurrency = 'USD';
 
-  DropdownButton<String> getDropdownButton(){
-    return DropdownButton<String>(
-              value: selectedCurrency,
-              items: getDropdownItems(),
-               onChanged: (value){
-              setState(() {
-                selectedCurrency = value;
-              });
-            }
-            );
-
-  }
-
-  List<DropdownMenuItem<String>> getDropdownItems() {
-  List<DropdownMenuItem<String>> dropdownItems = [];
+  DropdownButton<String> andriodDropdown(){
+    
+    List<DropdownMenuItem<String>> dropdownItems = [];
 
   for (String currency in currenciesList){
     
@@ -38,11 +27,21 @@ class _PriceScreenState extends State<PriceScreen> {
       dropdownItems.add(newItem);
       
   }
-  return dropdownItems;
-}
+  
+    return DropdownButton<String>(
+              value: selectedCurrency,
+              items: dropdownItems,
+               onChanged: (value){
+              setState(() {
+                selectedCurrency = value;
+              });
+            }
+            );
 
-List <DropdownMenuItem<String>> getpickerItems(){
-  List<DropdownMenuItem<String>> pickerItems = [];
+  }
+
+  CupertinoPicker iOSPicker(){
+    List<DropdownMenuItem<String>> pickerItems = [];
   for (String currency in currenciesList){
     var newItem = DropdownMenuItem(
       value: currency,
@@ -50,14 +49,30 @@ List <DropdownMenuItem<String>> getpickerItems(){
     );
 
     pickerItems.add(newItem);
+  } 
+
+    return CupertinoPicker(
+              backgroundColor: Colors.lightBlue,
+              itemExtent: 32.0, onSelectedItemChanged: (selectedIndex){
+              print(selectedIndex);
+              },
+               children: pickerItems,
+            );
   }
 
-return pickerItems;
-}
+
+  Widget? getPicker(){
+    if (Platform.isIOS){
+      return iOSPicker();
+    }
+    else if (Platform.isAndroid){
+      return andriodDropdown();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    getDropdownItems();
+    // getDropdownItems();
     return Scaffold(
       appBar: AppBar(
         title: const Text('🤑 Coin Ticker'),
@@ -92,13 +107,7 @@ return pickerItems;
             alignment: Alignment.center,
             padding: const EdgeInsets.only(bottom: 30.0),
             color: Colors.lightBlue,
-            child: CupertinoPicker(
-              backgroundColor: Colors.lightBlue,
-              itemExtent: 32.0, onSelectedItemChanged: (selectedIndex){
-              print(selectedIndex);
-              },
-               children: getpickerItems(),
-            )
+            child: getPicker(),
           ),
         ],
       ),
